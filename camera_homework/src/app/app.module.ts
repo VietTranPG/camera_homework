@@ -1,3 +1,5 @@
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { UploadFile } from './../providers/upload-file';
 import { ModalImage } from './../pages/modal-image/modal-image';
 import { DataService } from './../providers/data-service';
 import { UtilityService } from './../providers/utility-service';
@@ -41,6 +43,8 @@ import { HomePage } from '../pages/home/home';
     SplashScreen,
     UtilityService,
     DataService,
+    UploadFile,
+    FileTransfer,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

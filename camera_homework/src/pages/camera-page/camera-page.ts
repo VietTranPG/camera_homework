@@ -3,6 +3,7 @@ import { LoginPage } from './../login-page/login-page';
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+
 /**
  * Generated class for the CameraPage page.
  *
@@ -18,7 +19,9 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 export class CameraPage {
   options: CameraOptions;
   listImage: Array<any>;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private _camera: Camera, public modalCtrl: ModalController) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private _camera: Camera,
+    public modalCtrl: ModalController) {
     this.listImage = [];
     console.log(_camera)
     this.options = {
@@ -74,6 +77,9 @@ export class CameraPage {
     options.sourceType = this._camera.PictureSourceType.PHOTOLIBRARY;
     this._camera.getPicture(options).then((imageData) => {
       console.log(imageData);
+      let blob: any = new Blob([imageData], { type: "image/jpeg" });
+      blob.name = 'image.jpg';
+      console.log(blob)
       this.presentModal(imageData);
       // let base64Image = 'data:image/jpeg;base64,' + imageData;
       this.listImage.push(imageData);

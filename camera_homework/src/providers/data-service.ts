@@ -13,7 +13,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class DataService {
 
-  constructor(public http: Http,private _utility : UtilityService) {
+  constructor(public http: Http, private _utility: UtilityService) {
     console.log('Hello DataService Provider');
   }
   login(data) {
@@ -23,5 +23,18 @@ export class DataService {
       this._utility.hideLoading();
       return res.json()
     })
+  };
+  postFile(files, params) {
+    let url = `${SystemConstants.BASE_API}api/uploadImage`;
+    let formData: FormData = new FormData();
+    formData.append('file', files[0], files[0].name);
+    if (params !== "" && params !== undefined && params !== null) {
+      for (var property in params) {
+        if (params.hasOwnProperty(property)) {
+          formData.append(property, params[property]);
+        }
+      }
+    }
+    return this.http.post(url, formData);
   }
 }
