@@ -1,0 +1,105 @@
+<ion-content>
+    <ion-row center>
+        <img src="assets/img/twitter-header.png" class="header-img">
+    </ion-row>
+    <ion-row>
+        <ion-col col-3 class="profile-img-col">
+            <div class="profile-frame"><img src="assets/img/twitter-ionic.jpg" class="profile-img"></div>
+        </ion-col>
+        <ion-col col-1>
+            <button class="profile-btn" ion-button icon-only clear small>
+  <ion-icon name="settings"></ion-icon>
+</button>
+        </ion-col>
+        <ion-col offset-1 col-2>
+            <button class="profile-btn" ion-button icon-only outline small>
+  <ion-icon name="contacts"></ion-icon>
+</button>
+        </ion-col>
+        <ion-col col-2>
+            <button class="profile-btn" ion-button outline small>
+  Edit Profile
+</button>
+        </ion-col>
+    </ion-row>
+    <ion-row padding-left class="name-row">
+        PowerGate
+    </ion-row>
+    <ion-row padding-left class="twitter-name">
+        @powergate
+    </ion-row>
+    <ion-row padding>
+        This demo upload images ionic2+ PowerGate software.
+    </ion-row>
+    <ion-row padding-left text-uppercase>
+        <ion-col>
+            <b>69</b> <span class="muted">Following</span>
+        </ion-col>
+        <ion-col>
+            <b>69</b> <span class="muted">Followers</span>
+        </ion-col>
+    </ion-row>
+
+    <ion-row padding-left padding-right padding-top>
+        <ion-segment [(ngModel)]="selectedType" mode="ios">
+            <ion-segment-button value="tweets">
+                Public
+            </ion-segment-button>
+            <ion-segment-button value="photos" (click)="selectImageSource()">
+                Photos
+            </ion-segment-button>
+            <ion-segment-button (click)="presentModal()" value="favorites">
+                Favorites
+            </ion-segment-button>
+        </ion-segment>
+    </ion-row>
+    <hr>
+
+    <img *ngFor="let tweet of listImage" src="{{tweet}}" class="tweet-img" [hidden]="listImage === null">
+
+    <ion-list>
+        <div *ngFor="let tweet of dummyTweets">
+            <ion-row>
+                <ion-col col-3>
+                    <img src="assets/img/{{tweet.img}}" class="tweet-img" [hidden]="tweet.currentImage !== null">
+                </ion-col>
+                <ion-col col-9>
+                    <ion-row>
+                        <ion-col col-9 class="no-top-padding">
+                            {{ tweet.username }} <span class="twitter-name">@{{ tweet.handle }}</span>
+                        </ion-col>
+                        <ion-col class="muted no-top-padding">
+                            <ion-icon name="chatbubbles"></ion-icon> {{ tweet.date | date: 'M/d' }}
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row>
+                        <ion-col class="no-top-padding">{{ tweet.text }}</ion-col>
+                    </ion-row>
+
+                    <ion-row class="share-row">
+                        <ion-col col-4 class="no-top-padding">
+                            <button ion-button icon-only clear small>
+        <ion-icon name="share-alt"></ion-icon><span class="muted"></span>
+      </button>
+                        </ion-col>
+
+                        <ion-col col-4 class="no-top-padding">
+                            <button ion-button icon-only clear small>
+        <ion-icon name="repeat"></ion-icon><span class="muted">{{ tweet.shareCount }}</span>
+      </button>
+                        </ion-col>
+
+                        <ion-col col-4 class="no-top-padding">
+                            <button ion-button icon-only clear small>
+        <ion-icon name="star"></ion-icon><span class="muted">{{ tweet.likeCount }}</span>
+      </button>
+                        </ion-col>
+
+                    </ion-row>
+                </ion-col>
+            </ion-row>
+            <hr>
+        </div>
+    </ion-list>
+</ion-content>

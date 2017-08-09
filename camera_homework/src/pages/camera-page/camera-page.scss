@@ -1,0 +1,44 @@
+page-camera-page {
+    .content {
+        background-color: white;
+    }
+    .content-ios {
+        background-color: white;
+    }
+    .header-img {
+        height: 150px;
+    }
+    .profile-img-col {
+        margin-top: -40px;
+    }
+    .profile-frame {
+        background: #ffffff;
+        padding: 4px;
+        border-radius: 5px;
+    }
+    .profile-img {
+        border-radius: 5px;
+    }
+    .profile-btn {
+        border-radius: 5px;
+    }
+    .name-row {
+        font-size: 1.9rem;
+    }
+    .twitter-name {
+        color: #8a9fa8;
+    }
+    .muted {
+        color: #8a9fa8;
+        font-size: 1rem;
+    }
+    .tweet-img {
+        border-radius: 5px;
+    }
+    .share-row {
+        height: 30px;
+    }
+    .no-top-padding {
+        padding-top: 0px;
+    }
+}
