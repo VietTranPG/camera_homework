@@ -77,9 +77,6 @@ export class CameraPage {
     options.sourceType = this._camera.PictureSourceType.PHOTOLIBRARY;
     this._camera.getPicture(options).then((imageData) => {
       console.log(imageData);
-      let blob: any = new Blob([imageData], { type: "image/jpeg" });
-      blob.name = 'image.jpg';
-      console.log(blob)
       this.presentModal(imageData);
       // let base64Image = 'data:image/jpeg;base64,' + imageData;
       this.listImage.push(imageData);

@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, ModalController, ViewController } from 'ionic-angular';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
+declare var window: any;
+import { Observable } from 'rxjs/Observable';
 /**
  * Generated class for the ModalImage page.
  *
@@ -12,18 +14,17 @@ import { File } from '@ionic-native/file';
 @Component({
   selector: 'page-modal-image',
   templateUrl: 'modal-image.html',
-  providers:[File]
+  providers: [File]
 })
 export class ModalImage {
   image: any;
   fileTransfer: FileTransferObject;
-
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, private _navParams: NavParams, private _transfer: FileTransfer, 
-    private _dataService: DataService,private _file : File) {
-      
+  images: Object = {}
+  files = [];
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, private _navParams: NavParams, private _transfer: FileTransfer,
+    private _dataService: DataService, private _file: File) {
     this.image = _navParams.get('image');
     this.fileTransfer = this._transfer.create();
-
   }
 
   ionViewDidLoad() {
@@ -43,12 +44,28 @@ export class ModalImage {
       user_id: 3,
       login_token: '6H6U088Br0sb49zX1cq80fDnt4rPoBM4NEZyljaIRWwwIJb6Jwsy1dqcKDx9'
     }
-    let test = [{ name: '' }, { name: '' }]
-    var reader = new FileReader();
-    console.log(reader);
-    this._dataService.postFile(test, params).subscribe((res) => {
-      console.log(res)
+    window.resolveLocalFileSystemURL(this.image, (fileEntry) => {
+      fileEntry.file((resFile) => {
+        this.readFile(resFile).subscribe((blob) => {
+          this.files.push(blob);
+          console.log(this.files);
+          this._dataService.postFile(this.files, params).subscribe((res) => {
+            console.log(res)
+          })
+        });
+      })
     })
   };
-  
+  readFile(resFile) {
+    var reader = new FileReader();
+    return new Observable(observer => {
+      reader.onloadend = function (e) {
+        let blob: any = new Blob([reader.result], { type: "image/jpeg" });
+        let name = new Date().getTime();
+        blob.name = `${name}_viettran.jpg`;
+        observer.next(blob);
+      };
+      reader.readAsArrayBuffer(resFile)
+    })
+  }
 }

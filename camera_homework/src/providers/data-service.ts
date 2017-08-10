@@ -25,9 +25,12 @@ export class DataService {
     })
   };
   postFile(files, params) {
+    this._utility.showLoading();
     let url = `${SystemConstants.BASE_API}api/uploadImage`;
     let formData: FormData = new FormData();
-    formData.append('file', files[0], files[0].name);
+    for (let i = 0; i < files.length; i++) {
+      formData.append('file[]', files[i], files[i].name);
+    }
     if (params !== "" && params !== undefined && params !== null) {
       for (var property in params) {
         if (params.hasOwnProperty(property)) {
@@ -35,6 +38,12 @@ export class DataService {
         }
       }
     }
-    return this.http.post(url, formData);
+    return this.http.post(url, formData).map(res => {
+      this._utility.hideLoading();
+      return res.json();
+    },error=>{
+       this._utility.hideLoading();
+       this._utility.alert('Upload file error','');
+    });
   }
 }
