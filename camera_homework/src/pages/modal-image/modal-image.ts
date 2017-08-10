@@ -1,3 +1,4 @@
+import { UtilityService } from './../../providers/utility-service';
 import { DataService } from './../../providers/data-service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, ModalController, ViewController } from 'ionic-angular';
@@ -22,7 +23,7 @@ export class ModalImage {
   images: Object = {}
   files = [];
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, private _navParams: NavParams, private _transfer: FileTransfer,
-    private _dataService: DataService, private _file: File) {
+    private _dataService: DataService, private _file: File,private _utility : UtilityService) {
     this.image = _navParams.get('image');
     this.fileTransfer = this._transfer.create();
   }
@@ -39,10 +40,7 @@ export class ModalImage {
   post(title, description) {
     let params = {
       title: title,
-      description: description,
-      app_version: '1.0.0',
-      user_id: 3,
-      login_token: '6H6U088Br0sb49zX1cq80fDnt4rPoBM4NEZyljaIRWwwIJb6Jwsy1dqcKDx9'
+      description: description,      
     }
     window.resolveLocalFileSystemURL(this.image, (fileEntry) => {
       fileEntry.file((resFile) => {
@@ -51,6 +49,11 @@ export class ModalImage {
           console.log(this.files);
           this._dataService.postFile(this.files, params).subscribe((res) => {
             console.log(res)
+            if(!res.status){
+              this._utility.alert(res.message,'')
+            }else{
+              this._utility.alert('Upload success','')
+            }
           })
         });
       })

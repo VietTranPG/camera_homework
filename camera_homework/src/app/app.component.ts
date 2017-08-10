@@ -14,7 +14,7 @@ export class MyApp {
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
-      if(localStorage.getItem('login_token')){
+      if(localStorage.getItem('user')){
         this.rootPage = CameraPage;
       }
       else{

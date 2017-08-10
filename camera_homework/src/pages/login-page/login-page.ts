@@ -35,7 +35,7 @@ password : string = "123123";
       if (res.status == SystemConstants.STATUS_ERROR) {
         this._utility.alert('Login fail', res.message);
       } else {
-        localStorage.setItem('login_token',res.data.login_token);
+        localStorage.setItem('user',JSON.stringify(res.data));
         this.navCtrl.push(CameraPage).then(() => {
           const index = this.navCtrl.getActive().index;
           this.navCtrl.remove(0, index);
