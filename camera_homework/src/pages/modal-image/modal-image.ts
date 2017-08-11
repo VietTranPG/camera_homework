@@ -62,7 +62,7 @@ export class ModalImage {
       reader.onloadend = function (e) {
         let blob: any = new Blob([reader.result], { type: "image/jpeg" });
         let name = new Date().getTime();
-        blob.name = `${name}_viettran.jpg`;
+        blob.name = `viettran_${name}.jpg`;
         observer.next(blob);
       };
       reader.readAsArrayBuffer(resFile)
