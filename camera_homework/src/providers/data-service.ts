@@ -26,6 +26,9 @@ export class DataService {
   };
   postFile(files, params) {
     this._utility.showLoading();
+    params.app_version = '1.0.0';
+    params.user_id = this.getUser().user_id;
+    params.login_token = this.getUser().login_token;
     let url = `${SystemConstants.BASE_API}api/uploadImage`;
     let formData: FormData = new FormData();
     for (let i = 0; i < files.length; i++) {
@@ -41,9 +44,13 @@ export class DataService {
     return this.http.post(url, formData).map(res => {
       this._utility.hideLoading();
       return res.json();
-    },error=>{
-       this._utility.hideLoading();
-       this._utility.alert('Upload file error','');
+    }, error => {
+      this._utility.hideLoading();
+      this._utility.alert('Upload file error', '');
     });
+  }
+  getUser() {
+    let user = JSON.parse(localStorage.getItem('user'));
+    return user;
   }
 }

@@ -3,7 +3,7 @@ import { LoginPage } from './../login-page/login-page';
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-
+import { ImagePicker } from '@ionic-native/image-picker';
 /**
  * Generated class for the CameraPage page.
  *
@@ -13,7 +13,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 @Component({
   selector: 'page-camera-page',
   templateUrl: 'camera-page.html',
-  providers: [Camera]
+  providers: [Camera, ImagePicker]
 })
 
 export class CameraPage {
@@ -21,7 +21,7 @@ export class CameraPage {
   listImage: Array<any>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private _camera: Camera,
-    public modalCtrl: ModalController) {
+    public modalCtrl: ModalController, private _imagePicker: ImagePicker) {
     this.listImage = [];
     console.log(_camera)
     this.options = {
@@ -48,7 +48,7 @@ export class CameraPage {
         }, {
           text: 'Library',
           handler: () => {
-            this.showLibrary();
+            this.showImagePicker();
           }
         }, {
           text: 'Cancel',
@@ -78,10 +78,27 @@ export class CameraPage {
     this._camera.getPicture(options).then((imageData) => {
       console.log(imageData);
       this.presentModal(imageData);
-      // let base64Image = 'data:image/jpeg;base64,' + imageData;
       this.listImage.push(imageData);
     }, (err) => {
-      // Handle error
+    });
+  }
+  showImagePicker() {
+    var options = {
+      maximumImagesCount: 10,
+      width: 800,
+      height: 800,
+      quality: 50
+    };
+    this._imagePicker.getPictures(options).then((results) => {
+      for (var i = 0; i < results.length; i++) {
+        console.log('Image URI: ' + results[i]);
+      }
+    }, (err) => { });
+  }
+  logout() {
+    this.navCtrl.push(LoginPage).then(() => {
+      const index = this.navCtrl.getActive().index;
+      this.navCtrl.remove(0, index);
     });
   }
 }
