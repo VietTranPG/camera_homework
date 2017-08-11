@@ -16,14 +16,16 @@
       <ion-list inset>
         <ion-item>
           <ion-label stacked color="primary">Title</ion-label>
-          <ion-input [(ngModel)]="title" ></ion-input>
+          <ion-input [(ngModel)]="title"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label stacked color="primary">Description</ion-label>
-          <ion-input [(ngModel)]="description" ></ion-input>
+          <ion-input [(ngModel)]="description"></ion-input>
         </ion-item>
       </ion-list>
     </ion-col>
   </ion-row>
-    <ion-img width="300" height="300" style="object-fit: cover" src="{{image}}"></ion-img>  
+  <ion-row *ngFor="let image of images">
+    <ion-img width="300" height="300" style="object-fit: cover" src="{{image}}"></ion-img>
+  </ion-row>
   <button ion-button color="success" full (click)="post(title,description)">Post</button>

@@ -3,7 +3,7 @@ import { SystemConstants } from './../../common/system.constants';
 import { DataService } from './../../providers/data-service';
 import { ModalImage } from './../modal-image/modal-image';
 import { LoginPage } from './../login-page/login-page';
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ImagePicker } from '@ionic-native/image-picker';
@@ -23,7 +23,7 @@ export class CameraPage {
   options: CameraOptions;
   listImage: Array<any>;
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private _camera: Camera,
-    public modalCtrl: ModalController, private _imagePicker: ImagePicker,private _dataService: DataService,private _utility : UtilityService) {
+    public modalCtrl: ModalController, private _imagePicker: ImagePicker, private _dataService: DataService, private _utility: UtilityService, public zone: NgZone) {
     this.listImage = [];
     console.log(_camera)
     this.options = {
@@ -34,10 +34,12 @@ export class CameraPage {
     }
     this.getListImage();
   }
-  presentModal(image) {
-    let Modal = this.modalCtrl.create(ModalImage, { image: image });
-    console.log(Modal);
+  presentModal(images) {
+    let Modal = this.modalCtrl.create(ModalImage, { images: images });
     Modal.present();
+    Modal.onDidDismiss(()=>{
+      this.getListImage();
+    })
   }
   selectImageSource() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -51,7 +53,7 @@ export class CameraPage {
         }, {
           text: 'Library',
           handler: () => {
-            this.showLibrary();
+            this.showImagePicker();
           }
         }, {
           text: 'Cancel',
@@ -67,21 +69,23 @@ export class CameraPage {
     let options = this.options;
     options.sourceType = this._camera.PictureSourceType.CAMERA
     this._camera.getPicture(options).then((imageData) => {
-      // let base64Image = 'data:image/jpeg;base64,' + imageData;
-      console.log(imageData);
-      this.presentModal(imageData);
-      this.listImage.push(imageData);
+      let array = [];
+      array.push(imageData);
+      this.presentModal(array);
     }, (err) => {
       // Handle error
     });
   }
-  getListImage(){
-    this._dataService.getListImg().subscribe(res=>{
+  getListImage() {
+    this._dataService.getListImg().subscribe(res => {
       console.log(res)
-      if(res.status == SystemConstants.STATUS_SUCCESS){
+      if (res.status == SystemConstants.STATUS_SUCCESS) {
+        console.log(res.data);
+        this.zone.run(() => {
           this.listImage = res.data;
-      }else{
-        this._utility.alert('Error',res.message);
+        })
+      } else {
+        this._utility.alert('Error', res.message);
         this.logout();
       }
     })
@@ -104,9 +108,7 @@ export class CameraPage {
       quality: 50
     };
     this._imagePicker.getPictures(options).then((results) => {
-      for (var i = 0; i < results.length; i++) {
-        console.log('Image URI: ' + results[i]);
-      }
+      this.presentModal(results);
     }, (err) => { });
   }
   logout() {
