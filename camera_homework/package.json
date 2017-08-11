@@ -74,7 +74,7 @@
             "cordova-plugin-file-transfer": {},
             "cordova-plugin-file": {},
             "com.synconset.imagepicker": {
-                "PHOTO_LIBRARY_USAGE_DESCRIPTION": "app nay can su dung photo library"
+                "PHOTO_LIBRARY_USAGE_DESCRIPTION": "your usage message"
             }
         },
         "platforms": [

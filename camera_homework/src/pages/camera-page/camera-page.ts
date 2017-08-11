@@ -1,3 +1,6 @@
+import { UtilityService } from './../../providers/utility-service';
+import { SystemConstants } from './../../common/system.constants';
+import { DataService } from './../../providers/data-service';
 import { ModalImage } from './../modal-image/modal-image';
 import { LoginPage } from './../login-page/login-page';
 import { Component } from '@angular/core';
@@ -19,9 +22,8 @@ import { ImagePicker } from '@ionic-native/image-picker';
 export class CameraPage {
   options: CameraOptions;
   listImage: Array<any>;
-
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private _camera: Camera,
-    public modalCtrl: ModalController, private _imagePicker: ImagePicker) {
+    public modalCtrl: ModalController, private _imagePicker: ImagePicker,private _dataService: DataService,private _utility : UtilityService) {
     this.listImage = [];
     console.log(_camera)
     this.options = {
@@ -30,12 +32,13 @@ export class CameraPage {
       encodingType: this._camera.EncodingType.JPEG,
       mediaType: this._camera.MediaType.PICTURE,
     }
+    this.getListImage();
   }
   presentModal(image) {
     let Modal = this.modalCtrl.create(ModalImage, { image: image });
+    console.log(Modal);
     Modal.present();
   }
-
   selectImageSource() {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Select image source',
@@ -48,7 +51,7 @@ export class CameraPage {
         }, {
           text: 'Library',
           handler: () => {
-            this.showImagePicker();
+            this.showLibrary();
           }
         }, {
           text: 'Cancel',
@@ -72,15 +75,26 @@ export class CameraPage {
       // Handle error
     });
   }
+  getListImage(){
+    this._dataService.getListImg().subscribe(res=>{
+      console.log(res)
+      if(res.status == SystemConstants.STATUS_SUCCESS){
+          this.listImage = res.data;
+      }else{
+        this._utility.alert('Error',res.message);
+        this.logout();
+      }
+    })
+  }
   showLibrary() {
     let options = this.options;
     options.sourceType = this._camera.PictureSourceType.PHOTOLIBRARY;
     this._camera.getPicture(options).then((imageData) => {
       console.log(imageData);
       this.presentModal(imageData);
-      this.listImage.push(imageData);
     }, (err) => {
     });
+    this.showImagePicker();
   }
   showImagePicker() {
     var options = {
@@ -97,6 +111,7 @@ export class CameraPage {
   }
   logout() {
     this.navCtrl.push(LoginPage).then(() => {
+      localStorage.clear();
       const index = this.navCtrl.getActive().index;
       this.navCtrl.remove(0, index);
     });

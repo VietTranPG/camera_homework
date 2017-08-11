@@ -27,7 +27,7 @@ export class DataService {
   postFile(files, params) {
     this._utility.showLoading();
     params.app_version = '1.0.0';
-    params.user_id = this.getUser().user_id;
+    params.user_id = this.getUser().id;
     params.login_token = this.getUser().login_token;
     let url = `${SystemConstants.BASE_API}api/uploadImage`;
     let formData: FormData = new FormData();
@@ -49,8 +49,24 @@ export class DataService {
       this._utility.alert('Upload file error', '');
     });
   }
+  getListImg() {
+    this._utility.showLoading();
+    let user = this.getUser();
+    let user_id = user.id;
+    let login_token = user.login_token;
+    let app_version = "1.0.0";
+    let url = `${SystemConstants.BASE_API}api/getImageList?user_id=${user_id}&login_token=${login_token}&app_version=${app_version}`;
+    return this.http.get(url).map(res => {
+      this._utility.hideLoading();
+      return res.json();
+    }, err => {
+      this._utility.hideLoading();
+      this._utility.alert('Get image error', '');
+    })
+  }
   getUser() {
     let user = JSON.parse(localStorage.getItem('user'));
     return user;
   }
+
 }

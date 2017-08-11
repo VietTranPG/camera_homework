@@ -23,7 +23,7 @@ export class ModalImage {
   images: Object = {}
   files = [];
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, private _navParams: NavParams, private _transfer: FileTransfer,
-    private _dataService: DataService, private _file: File,private _utility : UtilityService) {
+    private _dataService: DataService, private _file: File, private _utility: UtilityService) {
     this.image = _navParams.get('image');
     this.fileTransfer = this._transfer.create();
   }
@@ -40,7 +40,7 @@ export class ModalImage {
   post(title, description) {
     let params = {
       title: title,
-      description: description,      
+      description: description,
     }
     window.resolveLocalFileSystemURL(this.image, (fileEntry) => {
       fileEntry.file((resFile) => {
@@ -49,11 +49,16 @@ export class ModalImage {
           console.log(this.files);
           this._dataService.postFile(this.files, params).subscribe((res) => {
             console.log(res)
-            if(!res.status){
-              this._utility.alert(res.message,'')
-            }else{
-              this._utility.alert('Upload success','')
+            if (!res.status) {
+              this._utility.alert(res.message, '')
+            } else {
+              this.files = [];
+              this._utility.alert('Upload success', '')
             }
+          }, (err) => {
+            this.files = [];
+            this._utility.hideLoading();
+            this._utility.alert('Upload file error', '');
           })
         });
       })

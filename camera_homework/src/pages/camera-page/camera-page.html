@@ -55,7 +55,7 @@
     </ion-row>
     <hr>
 
-    <img *ngFor="let tweet of listImage" src="{{tweet}}" class="tweet-img" [hidden]="listImage === null">
+    <img *ngFor="let tweet of listImage" src="{{tweet.image_link}}" class="tweet-img" [hidden]="listImage === null">
 
     <ion-list>
         <div *ngFor="let tweet of dummyTweets">
