@@ -94,7 +94,7 @@ export class CameraPage {
       this.presentModal(imageData);
     }, (err) => {
     });
-    this.showImagePicker();
+    // this.showImagePicker();
   }
   showImagePicker() {
     var options = {
