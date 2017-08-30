@@ -91,7 +91,7 @@
     <plugin name="cordova-plugin-file" spec="^4.0.0" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.6.3" />
     <plugin name="cordova-plugin-googleplus" spec="^5.1.1">
-        <variable name="REVERSED_CLIENT_ID" value="674168628795-2gtsckf76gj896rmosq6l3dnuap1erou.apps.googleusercontent.com" />
+        <variable name="REVERSED_CLIENT_ID" value="674168628795-46t2u3pla4ov7ihuuhra9h5ko1pl55cn.apps.googleusercontent.com" />
     </plugin>
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
     <plugin name="cordova-plugin-statusbar" spec="2.2.2" />

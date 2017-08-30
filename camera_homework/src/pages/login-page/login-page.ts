@@ -58,7 +58,10 @@ export class LoginPage {
       .catch(e => console.log('Error logging into Facebook', e));
   }
   loginGoogle() {
-    this.googlePlus.login({})
+    this.googlePlus.login({
+      'webClientId': '674168628795-46t2u3pla4ov7ihuuhra9h5ko1pl55cn.apps.googleusercontent.com',
+          'offline': true
+    })
       .then(res => console.log(res))
       .catch(err => console.error(err));
   }
